@@ -9,7 +9,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>start</artifactId>
+    <artifactId>controller</artifactId>
 
     <properties>
         <maven.compiler.source>23</maven.compiler.source>
@@ -19,7 +19,7 @@
     <dependencies>
         <dependency>
             <groupId>com.sontaypham</groupId>
-            <artifactId>controller</artifactId>
+            <artifactId>application</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
