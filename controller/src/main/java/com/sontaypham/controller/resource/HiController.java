@@ -14,6 +14,6 @@ public class HiController {
     }
     @GetMapping()
     public String sayHi() {
-        return eventApplicationService.sucCac("Trung Coc");
+        return eventApplicationService.sayHi("Trung Coc");
     }
 }
