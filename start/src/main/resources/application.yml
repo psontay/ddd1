@@ -1,2 +1,49 @@
 server:
   port: 8080
+spring:
+  application:
+    name: ddd1
+resilience4j:
+  circuitbreaker:
+    instances:
+      checkRandom:
+        register-health-indicator: true
+#        sliding window algorithm
+        sliding-window-size: 10
+#        number of permit request when state half open
+        permitted-number-of-calls-in-half-open-state: 3
+#        sliding-window-type: TIME_BASED
+#        circuit breaker start to judge
+        minimum-number-of-calls: 5
+#        wait to changing state
+        wait-duration-in-open-state:
+          5s
+        failure-rate-threshold: 50
+        event-consumer-buffer-size: 10
+  ratelimiter:
+    instances:
+      backendA:
+        limit-for-period: 3
+        limit-refresh-period:
+          10s
+        timeout-duration:
+          0
+        register-health-indicator: true
+        event-consumer-buffer-size: 100
+      backendB:
+        limit-for-period: 6
+        limit-refresh-period:
+          10s
+        timeout-duration:
+          3s
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "*"
