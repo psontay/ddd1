@@ -1,0 +1,28 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: ${POSTGRES_CONTAINER_NAME}
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - ${POSTGRES_PORT}
+    volumes:
+      - ./postgresql/data_new:/var/lib/postgresql/data
+      - ./postgresql/init:/docker-entrypoint-initdb.d
+    networks:
+      - ${POSTGRES_NETWORKS}
+
+  redis:
+    image: redislabs/redismod:latest
+    container_name: ${REDIS_CONTAINER_NAME}
+    ports:
+      - ${REDIS_PORT}
+    networks:
+      - ${REDIS_NETWORKS}
+
+networks:
+  ddd1-network:
+    driver: bridge

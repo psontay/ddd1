@@ -37,3 +37,8 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+# environment
+.env
+# data db
+environment/postgresql/data_new/
