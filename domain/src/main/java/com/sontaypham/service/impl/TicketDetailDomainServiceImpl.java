@@ -14,9 +14,10 @@ import org.springframework.stereotype.Service;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 public class TicketDetailDomainServiceImpl implements TicketDetailDomainService {
-//    TicketDetailRepository ticketDetailRepository;
+    TicketDetailRepository ticketDetailRepository;
     @Override
     public TicketDetail getTicketDetailById(Long ticketId) {
-        return null;
+        log.info("DOMAIN: getTicketDetailById: {}", ticketId);
+        return ticketDetailRepository.findById(ticketId).orElse(null);
     }
 }
