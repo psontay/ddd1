@@ -2,7 +2,7 @@ package com.sontaypham.cache.redis.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sontaypham.cache.redis.RedisInfrastructure;
+import com.sontaypham.cache.redis.RedisInfrastructureService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -14,13 +14,13 @@ import java.util.Optional;
 
 @Component
 @Slf4j
-public class RedisInfrastructureServiceImpl  implements RedisInfrastructure {
+public class RedisInfrastructureServiceImpl implements RedisInfrastructureService {
 
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
     @Override
     public void setString(String key, String value) {
-        if (StringUtils.hasLength(key)) { // null or ''
+        if (StringUtils.hasLength(key)) {
             return;
         }
         redisTemplate.opsForValue().set(key, value);
@@ -28,11 +28,6 @@ public class RedisInfrastructureServiceImpl  implements RedisInfrastructure {
 
     @Override
     public String getString(String key) {
-//        Object result = redisTemplate.opsForValue().get(key);
-//        if (result == null) {
-//            return null;
-//        }
-//        return String.valueOf(result);
         return Optional.ofNullable(redisTemplate.opsForValue().get(key))
                        .map(String::valueOf)
                        .orElse(null);
@@ -40,9 +35,7 @@ public class RedisInfrastructureServiceImpl  implements RedisInfrastructure {
 
     @Override
     public void setObject(String key, Object value) {
-//        log.info("Set redis::1, {}", key);
-        if (!StringUtils.hasLength(key)) { // null or ''
-//            log.info("Set redis::null, {}", StringUtils.hasLength(key));
+        if (!StringUtils.hasLength(key)) {
             return;
         }
 
@@ -50,12 +43,7 @@ public class RedisInfrastructureServiceImpl  implements RedisInfrastructure {
             redisTemplate.opsForValue().set(key, value);
         }catch (Exception e){
             log.error("setObject error:{}",e.getMessage());
-        }
-//        redisTemplate.opsForValue().set(key, value);
-//        // Kiểm tra xem giá trị có được lưu thành công hay không
-//        Object result = redisTemplate.opsForValue().get(key);
-//        log.info("Set redis::{}", result != null && result.equals(value));
-    }
+        }}
 
     @Override
     public <T> T getObject(String key, Class<T> targetClass) {
@@ -64,17 +52,8 @@ public class RedisInfrastructureServiceImpl  implements RedisInfrastructure {
         if (result == null) {
             return null;
         }
-//        try {
-//            log.info("get Cache::1{}", JSON.parseObject((String) result, targetClass));
-//            return JSON.parseObject((String) result, targetClass);
-//        } catch (Exception e) {
-//            log.error("error Cache::{}", e);
-//            return null;
-//        }
-        // Nếu kết quả là một LinkedHashMap
         if (result instanceof Map) {
             try {
-                // Chuyển đổi LinkedHashMap thành đối tượng mục tiêu
                 ObjectMapper objectMapper = new ObjectMapper();
                 return objectMapper.convertValue(result, targetClass);
             } catch (IllegalArgumentException e) {
@@ -83,7 +62,6 @@ public class RedisInfrastructureServiceImpl  implements RedisInfrastructure {
             }
         }
 
-        // Nếu result là String, thực hiện chuyển đổi bình thường
         if (result instanceof String) {
             try {
                 ObjectMapper objectMapper = new ObjectMapper();
@@ -94,6 +72,16 @@ public class RedisInfrastructureServiceImpl  implements RedisInfrastructure {
             }
         }
 
-        return null; // hoặc ném ra một ngoại lệ tùy ý
+        return null;
+    }
+
+    @Override
+    public void setTTL(String key, long ttl) {
+
+    }
+
+    @Override
+    public long getTTL(String key) {
+        return 0;
     }
 }
