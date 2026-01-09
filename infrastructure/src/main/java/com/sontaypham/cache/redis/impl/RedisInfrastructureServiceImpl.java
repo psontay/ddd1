@@ -20,9 +20,7 @@ public class RedisInfrastructureServiceImpl implements RedisInfrastructureServic
     private RedisTemplate<String, Object> redisTemplate;
     @Override
     public void setString(String key, String value) {
-        if (StringUtils.hasLength(key)) {
-            return;
-        }
+        if (!StringUtils.hasLength(key)) return;
         redisTemplate.opsForValue().set(key, value);
     }
 
@@ -35,10 +33,8 @@ public class RedisInfrastructureServiceImpl implements RedisInfrastructureServic
 
     @Override
     public void setObject(String key, Object value) {
-        if (!StringUtils.hasLength(key)) {
+        if (!StringUtils.hasLength(key))
             return;
-        }
-
         try {
             redisTemplate.opsForValue().set(key, value);
         }catch (Exception e){
@@ -49,9 +45,8 @@ public class RedisInfrastructureServiceImpl implements RedisInfrastructureServic
     public <T> T getObject(String key, Class<T> targetClass) {
         Object result = redisTemplate.opsForValue().get(key);
         log.info("get Cache::{}", result);
-        if (result == null) {
+        if (result == null)
             return null;
-        }
         if (result instanceof Map) {
             try {
                 ObjectMapper objectMapper = new ObjectMapper();
@@ -71,7 +66,6 @@ public class RedisInfrastructureServiceImpl implements RedisInfrastructureServic
                 return null;
             }
         }
-
         return null;
     }
 
