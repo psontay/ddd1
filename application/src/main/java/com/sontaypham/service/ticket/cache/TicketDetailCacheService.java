@@ -25,11 +25,11 @@ public class TicketDetailCacheService {
         log.info("Implement getTicketDefaultCacheNormal->, {}, {} ", id, version);
         TicketDetail ticketDetail = redisInfrastructureService.getObject(getEventItemKey(id), TicketDetail.class );
         if ( ticketDetail != null ) {
-            log.info("FROM CACHE {}, {}, {}", id , version , ticketDetail );
+            log.info("FROM CACHE-> {}, {}, {}", id , version , ticketDetail );
             return ticketDetail;
         }
         ticketDetail = ticketDetailDomainService.getTicketDetailById(id);
-        log.info("FROM CACHE {}, {}, {}", id , version , ticketDetail );
+        log.info("FROM CACHE-> {}, {}, {}", id , version , ticketDetail );
         if ( ticketDetail != null ) {
             redisInfrastructureService.setObject(getEventItemKey(id), ticketDetail);
         }
@@ -39,7 +39,7 @@ public class TicketDetailCacheService {
         log.info("Implement getTicketDefaultCacheVip->, {}, {} ", id, version);
         TicketDetail ticketDetail = redisInfrastructureService.getObject(getEventItemKey(id), TicketDetail.class );
         if ( ticketDetail != null ) {
-            log.info("FROM CACHE {}, {}, {}", id , version , ticketDetail );
+            log.info("FROM CACHE-> {}, {}, {}", id , version , ticketDetail);
             return ticketDetail;
         }
         RedisDistributedLocker locker = redisDistributedService.getDistributedLock("PRO_LOCK_KEY_ITEM"+id);
@@ -47,19 +47,19 @@ public class TicketDetailCacheService {
             // lock key
             boolean isLock = locker.tryLock(1, 10, TimeUnit.SECONDS);
             if ( !isLock ) {
-                log.info("LOCK WAIT TIME ITEM {}", version);
+                log.info("LOCK WAIT TIME ITEM-> {}", version);
                 Thread.sleep(50);
                 return redisInfrastructureService.getObject(getEventItemKey(id), TicketDetail.class );
             }
             // check cache 1
             ticketDetail = redisInfrastructureService.getObject(getEventItemKey(id), TicketDetail.class );
             if ( ticketDetail != null ) {
-                log.info("FROM CACHE {}, {}, {}", id , version , ticketDetail );
+                log.info("FROM CACHE-> {}, {}, {}", id , version , ticketDetail );
                 return ticketDetail;
             }
-            // if cache null -> db
+            // if cache null -> dbs
             ticketDetail = ticketDetailDomainService.getTicketDetailById(id);
-            log.info("FROM DBS -> {}, {}, {}", id , version , ticketDetail );
+            log.info("FROM DBS-> {}, {}, {}", id , version , ticketDetail );
             if ( ticketDetail == null) {
                 log.info("TICKET DETAIL IS NULL {}", version);
                 return null;
