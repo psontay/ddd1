@@ -44,29 +44,33 @@ public class TicketDetailCacheService {
         }
         RedisDistributedLocker locker = redisDistributedService.getDistributedLock("PRO_LOCK_KEY_ITEM"+id);
         try{
-            boolean isLock = locker.tryLock(1, 5, TimeUnit.SECONDS);
+            // lock key
+            boolean isLock = locker.tryLock(1, 10, TimeUnit.SECONDS);
             if ( !isLock ) {
                 log.info("LOCK WAIT TIME ITEM {}", version);
-                return ticketDetail;
+                Thread.sleep(50);
+                return redisInfrastructureService.getObject(getEventItemKey(id), TicketDetail.class );
             }
+            // check cache 1
             ticketDetail = redisInfrastructureService.getObject(getEventItemKey(id), TicketDetail.class );
             if ( ticketDetail != null ) {
                 log.info("FROM CACHE {}, {}, {}", id , version , ticketDetail );
                 return ticketDetail;
             }
+            // if cache null -> db
             ticketDetail = ticketDetailDomainService.getTicketDetailById(id);
             log.info("FROM DBS -> {}, {}, {}", id , version , ticketDetail );
             if ( ticketDetail == null) {
                 log.info("TICKET DETAIL IS NULL {}", version);
-                redisInfrastructureService.setObject(getEventItemKey(id), ticketDetail);
-                return ticketDetail;
+                return null;
             }
+            // set cache
             redisInfrastructureService.setObject(getEventItemKey(id), ticketDetail);
             return ticketDetail;
         }catch (Exception e){
             throw new RuntimeException(e);
         }finally {
-            locker.unlock();
+            if (locker.isHeldByCurrentThread()) locker.unlock();
         }
     }
     private String getEventItemKey( Long id ) {
