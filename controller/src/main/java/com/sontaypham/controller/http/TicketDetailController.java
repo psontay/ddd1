@@ -1,5 +1,6 @@
 package com.sontaypham.controller.http;
 
+import com.sontaypham.controller.model.enums.ResultUtil;
 import com.sontaypham.controller.model.vo.ResultMessage;
 import com.sontaypham.controller.utils.ResultUtils;
 import com.sontaypham.model.entity.TicketDetail;
@@ -26,6 +27,6 @@ public class TicketDetailController {
         @PathVariable("detailId") Long detailId
         ){
         log.info("TicketDetailController.getTicketDetail: ticketId = {}, detailId = {}", ticketId, detailId);
-        return null;
+        return ResultUtil.data(ticketDetailApplicationService.getTicketDetailById(ticketId));
     }
 }
