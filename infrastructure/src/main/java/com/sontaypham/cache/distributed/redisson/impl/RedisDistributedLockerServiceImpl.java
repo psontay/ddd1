@@ -3,6 +3,7 @@ package com.sontaypham.cache.distributed.redisson.impl;
 import com.sontaypham.cache.distributed.redisson.RedisDistributedLocker;
 import com.sontaypham.cache.distributed.redisson.RedisDistributedService;
 import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
@@ -12,9 +13,9 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class RedisDistributedLockerServiceImpl implements RedisDistributedService {
-    @Resource
-    private RedissonClient redissonClient;
+    private final RedissonClient redissonClient;
     @Override
     public RedisDistributedLocker getDistributedLock(String lockKey) {
         RLock rlock = redissonClient.getLock(lockKey);
