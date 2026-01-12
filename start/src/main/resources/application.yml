@@ -74,7 +74,10 @@ management:
   endpoint:
     health:
       show-details: always
+    prometheus:
+      access: read_only
   endpoints:
     web:
       exposure:
         include: "*"
+
