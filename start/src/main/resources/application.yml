@@ -22,7 +22,7 @@ spring:
       indent-output: true
   data:
     redis:
-      host: redis-ddd1
+      host: localhost
       port: 6319
       password: ""
       lettuce:
