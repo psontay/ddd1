@@ -42,5 +42,8 @@ build/
 **/.env
 # data db
 environment/postgresql/data_new/
+environment/grafana-storage
+environment/data
+environment/postgresql/data
 # benchmark
 benchmark

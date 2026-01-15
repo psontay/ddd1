@@ -19,6 +19,7 @@ public class TicketDetailApplicationServiceImpl implements TicketDetailApplicati
     TicketDetailCacheService ticketDetailCacheService;
     @Override
     public TicketDetail getTicketDetailById(Long id) {
-        return ticketDetailCacheService.getTicketDefaultCacheVip(id, System.currentTimeMillis());
+//        return ticketDetailCacheService.getTicketDefaultCacheLocal(id, System.currentTimeMillis());
+        return ticketDetailCacheService.getTicketDefaultCacheLocal(id, System.currentTimeMillis());
     }
 }
