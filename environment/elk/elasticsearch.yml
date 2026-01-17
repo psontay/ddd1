@@ -1,0 +1,10 @@
+cluster.name: "docker-cluster"
+network.host: 0.0.0.0
+
+xpack.security.enabled: false
+xpack.security.enrollment.enabled: false
+
+discovery.type: single-node
+
+http.cors.enabled: true
+http.cors.allow-origin: "*"
