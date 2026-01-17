@@ -45,5 +45,6 @@ environment/postgresql/data_new/
 environment/data
 environment/grafana-storage
 environment/postgresql/data
+.idea/jsonSchemas.xml
 # benchmark
 benchmark
