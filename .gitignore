@@ -47,5 +47,6 @@ environment/grafana-storage
 environment/postgresql/data
 .idea/jsonSchemas.xml
 feature/infrastructure
+environment/elk/elasticsearch_data
 # benchmark
 benchmark
