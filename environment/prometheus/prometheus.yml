@@ -1,0 +1,26 @@
+global:
+  scrape_interval: 15s
+scrape_configs:
+  - job_name: "ddd1-prometheus"
+    scrape_interval: 5s
+    static_configs:
+      - targets: ["localhost:9090"]
+    metrics_path: "/metrics"
+  - job_name: "ddd1-springboot"
+    scrape_interval: 5s
+    static_configs:
+        - targets: ["host.docker.internal:8080"]
+    metrics_path: "/actuator/prometheus"
+  - job_name: "ddd1-node-exporter"
+    scrape_interval: 5s
+    static_configs:
+        - targets: ["host.docker.internal:9100"]
+  - job_name: "ddd1-postgres-exporter"
+    scrape_interval: 5s
+    static_configs:
+      - targets: ["postgres-exporter:9187"]
+  - job_name: "ddd1-redis-exporter"
+    scrape_interval: 5s
+    static_configs:
+        - targets: ["redis-exporter:9121"]
+    metrics_path: "/metrics"
