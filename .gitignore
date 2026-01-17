@@ -42,7 +42,6 @@ build/
 **/.env
 # data db
 environment/postgresql/data_new/
-<<<<<<< HEAD
 environment/data
 environment/grafana-storage
 environment/postgresql/data
