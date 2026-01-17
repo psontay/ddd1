@@ -22,7 +22,7 @@ spring:
       indent-output: true
   data:
     redis:
-      host: redis-ddd1
+      host: localhost
       port: 6319
       password: ""
       lettuce:
@@ -74,7 +74,10 @@ management:
   endpoint:
     health:
       show-details: always
+    prometheus:
+      access: read_only
   endpoints:
     web:
       exposure:
         include: "*"
+

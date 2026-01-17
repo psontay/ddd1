@@ -39,12 +39,14 @@ build/
 .DS_Store
 
 # environment
-.env
+**/.env
 # data db
 environment/postgresql/data_new/
+<<<<<<< HEAD
 environment/data
 environment/grafana-storage
 environment/postgresql/data
 .idea/jsonSchemas.xml
+feature/infrastructure
 # benchmark
 benchmark

@@ -21,12 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class TicketDetailController {
     TicketDetailApplicationService ticketDetailApplicationService;
-    @GetMapping("/{ticketId}/detail/{detailId}")
+    @GetMapping("/{ticketId}/detail")
     public ResultMessage<TicketDetail> getTicketDetail(
-        @PathVariable("ticketId") Long ticketId,
-        @PathVariable("detailId") Long detailId
+        @PathVariable("ticketId") Long ticketId
         ){
-        log.info("TicketDetailController.getTicketDetail: ticketId = {}, detailId = {}", ticketId, detailId);
+        log.info("TicketDetailController.getTicketDetail: ticketId = {}", ticketId);
         return ResultUtil.data(ticketDetailApplicationService.getTicketDetailById(ticketId));
     }
 }
