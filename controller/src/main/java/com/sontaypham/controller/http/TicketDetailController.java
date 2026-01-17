@@ -28,4 +28,9 @@ public class TicketDetailController {
         log.info("TicketDetailController.getTicketDetail: ticketId = {}", ticketId);
         return ResultUtil.data(ticketDetailApplicationService.getTicketDetailById(ticketId));
     }
+    @GetMapping("/{ticketId}/detail/order")
+    public boolean orderTicketByTicketId( @PathVariable("ticketId") Long ticketId){
+        log.info("TicketDetailController.orderTicketByTicketId: ticketId = {}", ticketId);
+        return ticketDetailApplicationService.orderTicketByTicketId(ticketId);
+    }
 }
