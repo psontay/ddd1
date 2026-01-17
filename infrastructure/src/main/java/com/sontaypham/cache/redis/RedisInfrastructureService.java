@@ -7,4 +7,5 @@ public interface RedisInfrastructureService {
     <T> T getObject ( String key , Class<T> targetClass );
     void setTTL ( String key , long ttl );
     long getTTL ( String key );
+    void delete ( String key );
 }

@@ -78,4 +78,9 @@ public class RedisInfrastructureServiceImpl implements RedisInfrastructureServic
     public long getTTL(String key) {
         return 0;
     }
+
+    @Override
+    public void delete(String key) {
+        redisTemplate.delete(key);
+    }
 }

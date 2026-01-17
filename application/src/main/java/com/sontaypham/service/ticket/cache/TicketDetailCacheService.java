@@ -25,22 +25,8 @@ public class TicketDetailCacheService {
     TicketDetailDomainService ticketDetailDomainService;
     Cache<Long, TicketDetail> ticketDetailLocalCache =
             CacheBuilder.newBuilder().initialCapacity(10).concurrencyLevel(10).expireAfterAccess(10, TimeUnit.MINUTES).build();
-    public TicketDetail getTicketDefaultCacheNormal ( Long id, Long version) {
-        log.info("Implement getTicketDefaultCacheNormal->, {}, {} ", id, version);
-        TicketDetail ticketDetail = redisInfrastructureService.getObject(getEventItemKey(id), TicketDetail.class );
-        if ( ticketDetail != null ) {
-            log.info("FROM CACHE-> {}, {}, {}", id , version , ticketDetail );
-            return ticketDetail;
-        }
-        ticketDetail = ticketDetailDomainService.getTicketDetailById(id);
-        log.info("FROM CACHE-> {}, {}, {}", id , version , ticketDetail );
-        if ( ticketDetail != null ) {
-            redisInfrastructureService.setObject(getEventItemKey(id), ticketDetail);
-        }
-        return ticketDetail;
-    }
-    public TicketDetail getTicketDefaultCacheVip ( Long id, Long version) { // 5.46k req/s
-        log.info("Implement getTicketDefaultCacheVip->, {}, {} ", id, version);
+    public TicketDetail getTicketDetailRedisCache(Long id, Long version) {
+        log.info("Implement getTicketDetailRedisCache->, {}, {} ", id, version);
         TicketDetail ticketDetail = redisInfrastructureService.getObject(getEventItemKey(id), TicketDetail.class );
         if ( ticketDetail != null ) {
             log.info("FROM DISTRIBUTED CACHE-> {}, {}, {}", id , version , ticketDetail);
@@ -88,7 +74,7 @@ public class TicketDetailCacheService {
         }
     }
 
-    public TicketDetail getTicketDefaultCacheLocal ( Long id, Long version) { // 9.68k req/s
+    public TicketDetail getTicketDetailLocalRedisCache(Long id, Long version) {
         // cache 1: local
         TicketDetail ticketDetail = getTicketDetailLocalCache(id);
         if ( ticketDetail != null ) {
@@ -139,5 +125,10 @@ public class TicketDetailCacheService {
     }
     private String getEventItemKey( Long id ) {
         return "PRO_TICKET:ITEM" + id;
+    }
+    public boolean orderTicketByTicketId ( Long ticketId ) {
+        ticketDetailLocalCache.invalidate(ticketId); // remove cache from local cache
+        redisInfrastructureService.delete(getEventItemKey(ticketId));
+        return true;
     }
 }
